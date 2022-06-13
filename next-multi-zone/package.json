@@ -1,0 +1,9 @@
+{
+  "name": "next-multi-zone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn --cwd ./care dev & yarn --cwd ./search dev"
+  }
+}

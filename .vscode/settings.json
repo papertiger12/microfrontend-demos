@@ -1,0 +1,6 @@
+{
+    "eslint.workingDirectories": [
+        "./next-multi-zone/care",
+        "./next-multi-zone/search",
+    ]
+}
