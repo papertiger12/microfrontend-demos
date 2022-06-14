@@ -4,6 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn --cwd ./care dev & yarn --cwd ./search dev"
+    "start": "yarn --cwd ./host-app dev & yarn --cwd ./micro-app-1 dev"
   }
 }
