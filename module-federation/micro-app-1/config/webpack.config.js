@@ -756,11 +756,10 @@ module.exports = function (webpackEnv) {
 
         // MODULE FEDERATION PLUGIN
         new ModuleFederationPlugin({
-          name: 'app1',
+          name: 'App1',
           filename: 'remoteEntry.js',
-          remotes: {},
           exposes: {
-            './App1': './src/App',
+            './App': './src/App',
           },
           shared: [
             {
