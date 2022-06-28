@@ -208,6 +208,7 @@ module.exports = function (webpackEnv) {
     // This means they will be the "root" imports that are included in JS bundle.
     entry: paths.appIndexJs,
     output: {
+      publicPath: 'auto',
       // The build folder.
       path: paths.appBuild,
       // Add /* filename */ comments to generated require()s in the output.
@@ -225,7 +226,7 @@ module.exports = function (webpackEnv) {
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
       // We inferred the "public path" (such as / or /my-project) from homepage.
-      publicPath: paths.publicUrlOrPath,
+      // publicPath: paths.publicUrlOrPath,
       // Point sourcemap entries to original disk location (format as URL on Windows)
       devtoolModuleFilenameTemplate: isEnvProduction
         ? info =>
@@ -569,6 +570,32 @@ module.exports = function (webpackEnv) {
       ].filter(Boolean),
     },
     plugins: [
+       // MODULE FEDERATION PLUGIN
+       new ModuleFederationPlugin({
+        name: 'App',
+        filename: 'remoteEntry.js',
+        exposes: {
+          './App': './src/App',
+        },
+        runtime: false,
+
+        // shared: [
+        //   {
+        //     react: {
+        //       singleton: true,
+        //       eager: true,
+        //       requiredVersion: false
+        //     }
+        //   },
+        //   {
+        //     'react-dom': {
+        //       singleton: true,
+        //       eager: true,
+        //       requiredVersion: false
+        //     }
+        //   }
+        // ]
+      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(
@@ -753,31 +780,6 @@ module.exports = function (webpackEnv) {
             },
           },
         }),
-
-        // MODULE FEDERATION PLUGIN
-        new ModuleFederationPlugin({
-          name: 'App1',
-          filename: 'remoteEntry.js',
-          exposes: {
-            './App': './src/App',
-          },
-          shared: [
-            {
-              react: {
-                singleton: true,
-                eager: true,
-                requiredVersion: false
-              }
-            },
-            {
-              'react-dom': {
-                singleton: true,
-                eager: true,
-                requiredVersion: false
-              }
-            }
-          ]
-        })
     ].filter(Boolean),
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter

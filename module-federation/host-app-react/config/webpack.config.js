@@ -202,6 +202,7 @@ module.exports = function (webpackEnv) {
     // This means they will be the "root" imports that are included in JS bundle.
     entry: paths.appIndexJs,
     output: {
+      publicPath: 'auto',
       // The build folder.
       path: paths.appBuild,
       // Add /* filename */ comments to generated require()s in the output.
@@ -219,7 +220,7 @@ module.exports = function (webpackEnv) {
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
       // We inferred the "public path" (such as / or /my-project) from homepage.
-      publicPath: paths.publicUrlOrPath,
+      // publicPath: paths.publicUrlOrPath,
       // Point sourcemap entries to original disk location (format as URL on Windows)
       devtoolModuleFilenameTemplate: isEnvProduction
         ? info =>
@@ -246,6 +247,8 @@ module.exports = function (webpackEnv) {
       level: 'none',
     },
     optimization: {
+      splitChunks: false,
+      runtimeChunk: 'single',
       minimize: isEnvProduction,
       minimizer: [
         // This is only used in production mode
@@ -563,6 +566,27 @@ module.exports = function (webpackEnv) {
       ].filter(Boolean),
     },
     plugins: [
+      new webpack.container.ModuleFederationPlugin({
+        name: 'HostApp',
+        filename: 'remoteEntry.js',
+        remotes:{
+          'App1': 'App@http://localhost:3001/remoteEntry.js',
+        },
+        // shared: [
+        //   {
+        //     react: {
+        //       singleton: true,
+        //       eager: true
+        //     }
+        //   },
+        //   {
+        //     'react-dom': {
+        //       singleton: true,
+        //       eager: true
+        //     }
+        //   }
+        // ]
+      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(
