@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
@@ -6,7 +5,7 @@ import styles from '../styles/Home.module.css'
 const App1 = dynamic(
   () => import('App1/App'),
   {
-    suspense: true,
+    loading: () => <p>Loading...</p>,
     ssr: false
   }
 );
@@ -25,9 +24,7 @@ export default function Home() {
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
-        <Suspense fallback={'loading app 1...'}>
-          <App1 />
-        </Suspense>
+        <App1 />
       </main>
     </div>
   )

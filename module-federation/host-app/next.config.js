@@ -8,9 +8,9 @@ const nextConfig = {
     config.plugins.push(
       new webpack.container.ModuleFederationPlugin({
         name: 'HostApp',
-        fileName: 'remoteEntry.js',
+        filename: 'remoteEntry.js',
         remotes:{
-          'App1': 'App1@http://localhost:3001/remoteEntry.js',
+          'App1': 'App@http://localhost:3001/remoteEntry.js',
         },
       })
     );
